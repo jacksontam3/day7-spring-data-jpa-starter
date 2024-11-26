@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.hasSize;
 
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
 
 import java.util.List;
 
@@ -31,8 +30,6 @@ class EmployeeControllerTest {
     @Autowired
     private MockMvc client;
 
-    @Autowired
-    private EmployeeInMemoryRepository employeeInMemoryRepository;
 
     @Autowired
     private JacksonTester<List<Employee>> employeesJacksonTester;
@@ -43,8 +40,8 @@ class EmployeeControllerTest {
     @BeforeEach
     void setUp() {
         givenDataToRepository();
-        givenDataToInMemoryRepository();
     }
+
 
     private void givenDataToRepository() {
         employeeRepository.deleteAll();
@@ -55,14 +52,6 @@ class EmployeeControllerTest {
         employeeRepository.save(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
     }
 
-    private void givenDataToInMemoryRepository() {
-        employeeInMemoryRepository.findAll().clear();
-        employeeInMemoryRepository.create(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
-        employeeInMemoryRepository.create(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
-        employeeInMemoryRepository.create(new Employee(3, "David Williams", 35, Gender.MALE, 5500.0));
-        employeeInMemoryRepository.create(new Employee(4, "Emily Brown", 23, Gender.FEMALE, 4500.0));
-        employeeInMemoryRepository.create(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
-    }
 
     @Test
     void should_return_employees_when_get_all_given_employee_exist() throws Exception {
@@ -125,7 +114,7 @@ class EmployeeControllerTest {
     @Test
     void should_create_employee_success() throws Exception {
         // Given
-        employeeRepository.findAll().clear();
+
         String givenName = "New Employee";
         Integer givenAge = 18;
         Gender givenGender = Gender.FEMALE;
@@ -152,7 +141,6 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenSalary));
         List<Employee> employees = employeeRepository.findAll();
         assertThat(employees).hasSize(6);
-        assertThat(employees.get(5).getId()).isEqualTo(6);
         assertThat(employees.get(5).getName()).isEqualTo(givenName);
         assertThat(employees.get(5).getAge()).isEqualTo(givenAge);
         assertThat(employees.get(5).getGender()).isEqualTo(givenGender);
@@ -162,6 +150,8 @@ class EmployeeControllerTest {
     @Test
     void should_update_employee_success() throws Exception {
         // Given
+        final Employee firstEmployee = employeeRepository.findAll().get(0);
+
         Integer givenId = 1;
         String givenName = "New Employee";
         Integer givenAge = 30;
@@ -178,7 +168,7 @@ class EmployeeControllerTest {
 
         // When
         // Then
-        client.perform(MockMvcRequestBuilders.put("/employees/" + givenId)
+        client.perform(MockMvcRequestBuilders.put("/employees/" + firstEmployee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(givenEmployee)
             )
@@ -188,9 +178,8 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(givenAge))
             .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(givenGender.name()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenSalary));
-        List<Employee> employees = employeeInMemoryRepository.findAll();
+        List<Employee> employees = employeeRepository.findAll();
         assertThat(employees).hasSize(5);
-        assertThat(employees.get(0).getId()).isEqualTo(1);
         assertThat(employees.get(0).getName()).isEqualTo(givenName);
         assertThat(employees.get(0).getAge()).isEqualTo(givenAge);
         assertThat(employees.get(0).getGender()).isEqualTo(givenGender);
@@ -200,18 +189,14 @@ class EmployeeControllerTest {
     @Test
     void should_remove_employee_success() throws Exception {
         // Given
-        int givenId = 1;
+        final Employee firstEmployee = employeeRepository.findAll().get(0);
 
         // When
         // Then
-        client.perform(MockMvcRequestBuilders.delete("/employees/" + givenId))
+        client.perform(MockMvcRequestBuilders.delete("/employees/" + firstEmployee.getId()))
             .andExpect(MockMvcResultMatchers.status().isNoContent());
         List<Employee> employees = employeeRepository.findAll();
         assertThat(employees).hasSize(4);
-        assertThat(employees.get(0).getId()).isEqualTo(2);
-        assertThat(employees.get(1).getId()).isEqualTo(3);
-        assertThat(employees.get(2).getId()).isEqualTo(4);
-        assertThat(employees.get(3).getId()).isEqualTo(5);
     }
 
     @Test
