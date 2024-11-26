@@ -6,15 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "company")
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "companyId")
     private List<Employee> employees = new ArrayList<>();
+
+    public Company(String name, List<Employee> employees) {
+        this.name = name;
+        this.employees = employees;
+    }
 
     public Company(Integer id, String name, List<Employee> employees) {
         this.id = id;
