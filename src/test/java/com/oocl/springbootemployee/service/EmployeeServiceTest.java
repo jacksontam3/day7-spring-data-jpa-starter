@@ -5,7 +5,6 @@ import com.oocl.springbootemployee.exception.EmployeeAgeSalaryNotMatchedExceptio
 import com.oocl.springbootemployee.exception.EmployeeInactiveException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
