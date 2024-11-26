@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
-    private final CompanyInMemoryRepository companyInMemoryRepository;
+
     private final CompanyRepository companyRepository;
 
-    public CompanyService(CompanyInMemoryRepository companyInMemoryRepository, CompanyRepository companyRepository) {
-        this.companyInMemoryRepository = companyInMemoryRepository;
+    public CompanyService(CompanyRepository companyRepository) {
+
         this.companyRepository = companyRepository;
     }
 
