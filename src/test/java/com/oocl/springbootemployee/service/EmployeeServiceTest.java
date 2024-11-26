@@ -27,9 +27,6 @@ class EmployeeServiceTest {
     @Mock
     EmployeeRepository mockedEmployeeRepository;
 
-    @Mock
-    EmployeeInMemoryRepository mockedEmployeeInMemoryRepository;
-
     @InjectMocks
     EmployeeService employeeService;
 
