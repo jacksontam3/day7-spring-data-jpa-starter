@@ -32,7 +32,7 @@ public class CompanyService {
     }
 
     public Company findById(Integer id) {
-        return companyInMemoryRepository.findById(id);
+        return companyRepository.findById(id).orElse(null);
     }
 
 
