@@ -19,6 +19,13 @@ public class Employee {
 
     private Boolean isActive = true;
 
+    public Employee(String name, Integer age, Gender gender, Double salary) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+    }
+
     public Employee(Integer id, String name, Integer age, Gender gender, Double salary) {
 
         this.id = id;
