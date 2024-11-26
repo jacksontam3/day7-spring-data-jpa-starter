@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,7 +53,7 @@ class EmployeeServiceTest {
         //given
         EmployeeService employeeService = getEmployeeService();
         Employee lucy = new Employee(1, "Lucy", 18, Gender.FEMALE, 8000.0);
-        when(mockedEmployeeInMemoryRepository.create(any())).thenReturn(lucy);
+        when(mockedEmployeeRepository.save(any())).thenReturn(lucy);
 
         //when
         Employee createdEmployee = employeeService.create(lucy);
@@ -69,7 +70,7 @@ class EmployeeServiceTest {
         //when
         //then
         assertThrows(EmployeeAgeNotValidException.class, () -> employeeService.create(kitty));
-        verify(mockedEmployeeInMemoryRepository, never()).create(any());
+        verify(mockedEmployeeRepository, never()).save(any());
     }
 
     @Test
@@ -81,7 +82,7 @@ class EmployeeServiceTest {
         //when
         //then
         assertThrows(EmployeeAgeNotValidException.class, () -> employeeService.create(kitty));
-        verify(mockedEmployeeInMemoryRepository, never()).create(any());
+        verify(mockedEmployeeRepository, never()).save(any());
     }
 
     @Test
@@ -92,7 +93,7 @@ class EmployeeServiceTest {
         //when
         employeeService.create(lucy);
         /* then */
-        verify(mockedEmployeeInMemoryRepository).create(argThat(Employee::getActive));
+        verify(mockedEmployeeRepository).save(argThat(Employee::getActive));
     }
 
     @Test
@@ -103,7 +104,7 @@ class EmployeeServiceTest {
         //when
         //then
         assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.create(bob));
-        verify(mockedEmployeeInMemoryRepository, never()).create(any());
+        verify(mockedEmployeeRepository, never()).save(any());
     }
 
     @Test
@@ -112,10 +113,10 @@ class EmployeeServiceTest {
         EmployeeService employeeService = getEmployeeService();
         Employee inactiveEmployee = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
         inactiveEmployee.setActive(false);
-        when(mockedEmployeeInMemoryRepository.findById(1)).thenReturn(inactiveEmployee);
+        when(mockedEmployeeRepository.findById(any())).thenReturn(Optional.of(inactiveEmployee));
         //when
         //then
         assertThrows(EmployeeInactiveException.class, () -> employeeService.update(1, inactiveEmployee));
-        verify(mockedEmployeeInMemoryRepository, never()).create(any());
+        verify(mockedEmployeeRepository, never()).save(any());
     }
 }
