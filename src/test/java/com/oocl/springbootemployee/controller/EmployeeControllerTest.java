@@ -9,6 +9,8 @@ import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
 
 import java.util.List;
+
+import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,25 @@ class EmployeeControllerTest {
     @Autowired
     private JacksonTester<List<Employee>> employeesJacksonTester;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @BeforeEach
     void setUp() {
+        givenDataToRepository();
+        givenDataToInMemoryRepository();
+    }
+
+    private void givenDataToRepository() {
+        employeeRepository.deleteAll();
+        employeeRepository.save(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
+        employeeRepository.save(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
+        employeeRepository.save(new Employee(3, "David Williams", 35, Gender.MALE, 5500.0));
+        employeeRepository.save(new Employee(4, "Emily Brown", 23, Gender.FEMALE, 4500.0));
+        employeeRepository.save(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
+    }
+
+    private void givenDataToInMemoryRepository() {
         employeeInMemoryRepository.findAll().clear();
         employeeInMemoryRepository.create(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
         employeeInMemoryRepository.create(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
@@ -48,7 +67,7 @@ class EmployeeControllerTest {
     @Test
     void should_return_employees_when_get_all_given_employee_exist() throws Exception {
         //given
-        final List<Employee> givenEmployees = employeeInMemoryRepository.findAll();
+        final List<Employee> givenEmployees = employeeRepository.findAll();
 
         //when
         //then
