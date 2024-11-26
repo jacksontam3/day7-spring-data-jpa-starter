@@ -51,4 +51,8 @@ public class CompanyService {
 
         return companyRepository.save(company);
     }
+
+    public void deleteCompany(Integer companyId) {
+        companyRepository.deleteById(companyId);
+    }
 }
