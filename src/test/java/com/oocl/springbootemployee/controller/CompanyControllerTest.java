@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //import com.oocl.springbootemployee.model.Company;
 //import com.oocl.springbootemployee.model.Employee;
 //import com.oocl.springbootemployee.model.Gender;
-//import com.oocl.springbootemployee.repository.CompanyRepository;
+//import com.oocl.springbootemployee.repository.CompanyInMemoryRepository;
 //import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
 //import java.util.List;
 //import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class CompanyControllerTest {
 //    private MockMvc client;
 //
 //    @Autowired
-//    private CompanyRepository companyRepository;
+//    private CompanyInMemoryRepository companyRepository;
 //
 //    @Autowired
 //    private EmployeeInMemoryRepository employeeRepository;
