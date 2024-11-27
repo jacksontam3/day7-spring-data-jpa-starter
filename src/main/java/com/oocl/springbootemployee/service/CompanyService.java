@@ -46,7 +46,9 @@ public class CompanyService {
     public Company update(Integer id, Company company) {
         final var getCompany = companyRepository.findById(id);
 
-        return companyRepository.save(company);
+        if(getCompany.isPresent()) {
+            return companyRepository.save(company);
+        }else return null;
     }
 
     public void deleteCompany(Integer companyId) {
