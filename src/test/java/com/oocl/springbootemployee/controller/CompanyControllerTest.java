@@ -45,13 +45,8 @@ class CompanyControllerTest {
 
     private Employee john_smith;
     private Employee jane_johnson;
-    private Employee david_williams;
-    private Employee emily_brown;
-    private Employee michael_jones;
     private Company acme_corporation;
     private Company techcom_solutions;
-    private Company stellar_enterprises;
-    private Company global_innovators;
     private Company nexus_industries;
 
     @BeforeEach
@@ -63,13 +58,13 @@ class CompanyControllerTest {
 
         john_smith = new Employee( "John Smith", 32, Gender.MALE, 5000.0);
         jane_johnson = new Employee( "Jane Johnson", 28, Gender.FEMALE, 6000.0);
-        david_williams = new Employee( "David Williams", 35, Gender.MALE, 5500.0);
-        emily_brown = new Employee( "Emily Brown", 23, Gender.FEMALE, 4500.0);
-        michael_jones = new Employee( "Michael Jones", 40, Gender.MALE, 7000.0);
+        Employee david_williams = new Employee("David Williams", 35, Gender.MALE, 5500.0);
+        Employee emily_brown = new Employee("Emily Brown", 23, Gender.FEMALE, 4500.0);
+        Employee michael_jones = new Employee("Michael Jones", 40, Gender.MALE, 7000.0);
         acme_corporation = companyRepository.save(new Company("Acme Corporation", List.of(john_smith, jane_johnson)));
         techcom_solutions = companyRepository.save(new Company("TechCom Solutions", List.of(david_williams, emily_brown, michael_jones)));
-        global_innovators = companyRepository.save(new Company("Global Innovators"));
-        stellar_enterprises = companyRepository.save(new Company("Stellar Enterprises"));
+        Company global_innovators = companyRepository.save(new Company("Global Innovators"));
+        Company stellar_enterprises = companyRepository.save(new Company("Stellar Enterprises"));
         nexus_industries = companyRepository.save(new Company("Nexus Industries"));
     }
 
